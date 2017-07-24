@@ -1,13 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+import { BrowserRouter, Route, useRouterHistory } from 'react-router-dom';
+import createBrowserHistory from 'history/createBrowserHistory'
+
 import Detail from './pages/Detail';
 
-import FunctionalTest from './pages/FunctionalTest';
+const customHistory = createBrowserHistory()
 
 ReactDOM.render(
-	<div>
-		<Detail message='This is a prop message!'/>
-	</div>,
+	<BrowserRouter>
+		<Route history={ customHistory } path="/" component={ Detail } />
+	</BrowserRouter>,
 	document.getElementById('app')
 );
