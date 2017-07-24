@@ -8,7 +8,6 @@ import FunctionalTest from './pages/FunctionalTest';
 ReactDOM.render(
 	<div>
 		<Detail message='This is a prop message!'/>
-		<FunctionalTest message='Hello from a functional component!'/>
 	</div>,
 	document.getElementById('app')
 );
