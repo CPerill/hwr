@@ -1,6 +1,8 @@
 import React from 'react';
 import ajax from 'superagent';
 
+//https://medium.com/@pshrmn/a-simple-react-router-v4-tutorial-7f23ff27adf
+
 class Detail extends React.Component {
 	constructor(props) {
 		super(props);
