@@ -4,40 +4,32 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter, Route, useRouterHistory, Switch, Link } from 'react-router-dom';
 import createBrowserHistory from 'history/createBrowserHistory'
 
+import App from './pages/App';
 import Detail from './pages/Detail';
 import List from './pages/List';
 
-const Main = () => (
+const MainListings = () => (
 	<main>
 	<Switch>
 			<Route exact path='/' component={List}/>
-			<Route path='/react' component={Detail}/>
+			<Route path='/detail/:repo' component={Detail}/>
 	</Switch>
 	</main>
 )
 
-const Header = () => (
-	<header>
-		<nav>
-			<ul>
-				<li><Link to='/'>Home</Link></li>
-				<li><Link to='/react'>React</Link></li>
-			</ul>
-		</nav>
-	</header>
-)
-
 //component to be rendered by router
-const App = () => (
+const Main = () => (
 	<div>
-		<Header />
-		<Main />
+		<MainListings />
 	</div>
 )
 
 ReactDOM.render(
 	<BrowserRouter>
+	<div>
 		<App />
+		<MainListings />
+	</div>
 	</BrowserRouter>,
 	document.getElementById('app')
 );

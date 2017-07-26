@@ -1,0 +1,4 @@
+http://www.hackingwithreact.com/read/1/24/making-custom-urls-with-react-router-params
+
+https://www.youtube.com/watch?v=ov4jGPYWp5U&list=PLyUlngzGzkztgTizxM6_zqiw8sRj7vBm0
+
