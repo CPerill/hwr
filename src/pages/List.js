@@ -10,7 +10,6 @@ class List extends React.Component {
                     <li><Link to="/detail/react">React</Link></li>
                     <li><Link to="/detail/react-native">React Native</Link></li>
                     <li><Link to="/detail/jest">Jest</Link></li>
-                    <li><Link to="/user/cperill">cperill</Link></li>
                 </ul>
             </div>
         );

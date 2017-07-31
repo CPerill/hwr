@@ -1,6 +1,6 @@
 import React from 'react';
 import ajax from 'superagent';
-import {Link} from 'react-router-dom';
+import {Link, NavLink} from 'react-router-dom';
 
 const baseURL = 'https://api.github.com/repos/facebook';
 
@@ -89,6 +89,8 @@ class Detail extends React.Component {
 		}
 
 		return (<div> 	
+			<p>You are here: <NavLink to="/" activeClassName="active">Home</NavLink> > {this.props.match.params.repo}</p>
+
 			<button onClick={ this.selectMode.bind(this, 'commits') }>Show Commits</button>
 			<button onClick={ this.selectMode.bind(this, 'forks') }>Show Forks</button>
 			<button onClick={ this.selectMode.bind(this, 'pulls') }>Show Pulls</button>

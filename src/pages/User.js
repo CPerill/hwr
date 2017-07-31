@@ -1,5 +1,6 @@
 import React from 'react';
 import ajax from 'superagent';
+import {Link, NavLink} from 'react-router-dom';
 
 const baseURL = 'https://api.github.com/users/';
 
@@ -33,9 +34,10 @@ class User extends React.Component {
         return this.state.detail.map((userInfo, index) => {
             const repo = userInfo.repo ? userInfo.repo.name : 'Unkn Repo';
             const commitMessage = userInfo.payload.commits ? userInfo.payload.commits.message : 'User left no message';
-            return (<p key={index}>
-                <p>{repo}: {commitMessage}</p>
-            </p>);
+            const creationDate = userInfo.created_at;
+            return (<li key={index}>
+                <strong>{repo}</strong>: at {creationDate}
+            </li>);
         });
     };
 
@@ -43,6 +45,7 @@ class User extends React.Component {
         let content;
         content = this.renderUserActivity();
         return (<div>
+            <p>You are here: <NavLink to="/" activeClassName="active">Home</NavLink> > {this.props.match.params.user}</p>
             {content}
         </div>)
     }
