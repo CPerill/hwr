@@ -1,36 +1,98 @@
 import React from 'react';
-import Chance from 'chance';
+import ajax from 'superagent';
+import {Link} from 'react-router-dom';
+
+const baseURL = 'https://api.github.com/repos/facebook';
+
+//https://medium.com/@pshrmn/a-simple-react-router-v4-tutorial-7f23ff27adf
 
 class Detail extends React.Component {
 	constructor(props) {
-	super(props);
-			
-	const people = [];
+		super(props);
 	
-	for (let i = 0; i < 10; i++) {
-		people.push({
-			name: chance.first(),
-			country: chance.country({ full: true })
-		});
+		this.state = { 	mode: 'commits',
+						commits: [],
+						forks: [],
+						pulls: []
+					};
+
 	}
-	
-	this.state = { people };
-}
-	
-	buttonClicked() {
-		const newState = {
-			name: chance.first()
+
+	fetchFeed(type) {
+		ajax.get(`${baseURL}/${this.props.match.params.repo}/${type}`)
+		.end((error, response) => {
+				if (!error && response) {
+						console.dir(response.body);
+						this.setState({ [type]: response.body });
+				} else {
+					console.log(`Error fetching ${type} from github`, error);
+				}
+			}
+		)
 	};
-		
-		this.setState(newState);
+	
+	componentWillMount() {
+		this.fetchFeed('commits');
+		this.fetchFeed('forks');
+		this.fetchFeed('pulls');
 	}
+	
+	selectMode(mode) {
+		this.setState({ mode });
+	}
+	
+	 renderCommits() {
+        return this.state.commits.map((commit, index) => {
+            const author = commit.author ? commit.author.login : 'Anonymous';
+
+            return (<p key={index}>
+                <Link to={`/user/${author}`}><strong>{author}</strong></Link>:
+                <a href={commit.html_url}>{commit.commit.message}</a>.
+            </p>);
+        });
+    }
+
+    renderForks() {
+        return this.state.forks.map((fork, index) => {
+            const owner = fork.owner ? fork.owner.login : 'Anonymous';
+
+            return (<p key={index}>
+                <Link to={`/user/:${owner}`}><strong>{owner}</strong></Link>: forked to
+                <a href={fork.html_url}>{fork.html_url}</a> at {fork.created_at}.
+            </p>);
+        });
+    }
+
+    renderPulls() {
+        return this.state.pulls.map((pull, index) => {
+            const user = pull.user ? pull.user.login : 'Anonymous';
+
+            return (<p key={index}>
+                <Link to={`/user/:${user}`}><strong>{user}</strong></Link>:
+                <a href={pull.html_url}>{pull.body}</a>.
+            </p>);
+        });
+    }
+	
+	
 
 	render() {
+		
+		let content;
+		
+		if (this.state.mode === 'commits' ) {
+			content = this.renderCommits();
+		} else if (this.state.mode === 'forks' ) {
+			content = this.renderForks();
+		}else {
+			content = this.renderPulls();
+		}
 
 		return (<div> 	
-		{this.state.people.map((person, index) => (
-			<p key={index}>Hello! { person.name } from { person.country }!</p>
-		))}
+			<button onClick={ this.selectMode.bind(this, 'commits') }>Show Commits</button>
+			<button onClick={ this.selectMode.bind(this, 'forks') }>Show Forks</button>
+			<button onClick={ this.selectMode.bind(this, 'pulls') }>Show Pulls</button>
+			{content}
 		</div>);
 	}
 }

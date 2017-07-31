@@ -1,14 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import Detail from './pages/Detail';
+import { BrowserRouter, Route, useRouterHistory, Switch, Link } from 'react-router-dom';
+import createBrowserHistory from 'history/createBrowserHistory'
 
-import FunctionalTest from './pages/FunctionalTest';
+import App from './pages/App';
+import routes from './routes';
 
 ReactDOM.render(
+	<BrowserRouter>
 	<div>
-		<Detail message='This is a prop message!'/>
-		<FunctionalTest message='Hello from a functional component!'/>
-	</div>,
+		<App />
+		{ routes }
+	</div>
+	</BrowserRouter>,
 	document.getElementById('app')
 );
