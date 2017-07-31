@@ -8,17 +8,17 @@ class User extends React.Component {
         super(props);
 
         this.state = {
-            events: []
+            detail: []
         };
     }
 
     fetchFeed(user) {
     //ajax.get(`${baseURL}/${user}/events`)
-    ajax.get(`${baseURL}cperill/events`)
+    ajax.get(`${baseURL}${user}/events`)
     .end((error, response) => {
             if (!error && response) {
                     console.dir(response.body);
-                    this.setState({ [user]: response.body });
+                    this.setState({ detail: response.body });
             } else {
                 console.log(`Error fetching ${user}'s activity from github`, error);
             }
@@ -29,31 +29,22 @@ class User extends React.Component {
         this.fetchFeed(`${this.props.match.params.user}`);
     };
 
-    renderUserActivity() {
-        return this.state.events.map((event, index) => {
-            const repoName = event.repo.name;
-            return (<p> key={index}>
-                <h1>{actor}</h1>
+   renderUserActivity() {
+        return this.state.detail.map((userInfo, index) => {
+            const repo = userInfo.repo ? userInfo.repo.name : 'Unkn Repo';
+            const commitMessage = userInfo.payload.commits ? userInfo.payload.commits.message : 'User left no message';
+            return (<p key={index}>
+                <p>{repo}: {commitMessage}</p>
             </p>);
         });
-    }
+    };
 
     render() {
-
-        return <div>
-            <p>Test1</p>
-            {this.state.events.map((event, index) => {
-            
-            const eventType = event.type;
-            const repoName = event.repo.name;
-            const creationDate = event.created_at;
-
-            return (<li key={index}>
-                <strong>{repoName}</strong>: {eventType} at {creationDate}.
-            </li>);
-        })}
-        <p>Test2</p>
-        </div>;
+        let content;
+        content = this.renderUserActivity();
+        return (<div>
+            {content}
+        </div>)
     }
 }
 
